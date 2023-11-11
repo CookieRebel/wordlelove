@@ -165,3 +165,22 @@
 .wordle-tile.correct.dance-5 {
   animation-delay: 0.5s;
 }
+
+@media (max-width: 600px) {
+  /* Adjust the max-width as needed */
+  .wordle-tile {
+    width: 15vw; /* Increase size to ensure it fits well on smaller screens */
+    height: 15vw;
+  }
+
+  .wordle-key {
+    min-width: 8vw; /* Increase key size for better tap accuracy */
+    padding: 10px; /* Increase padding for larger touch area */
+  }
+
+  /* Adjust the keyboard layout to ensure it's fully visible */
+  .wordle-keyboard {
+    flex-wrap: wrap; /* Wrap keys to the next line if they don't fit */
+    justify-content: center; /* Center the keys to maintain layout */
+  }
+}
