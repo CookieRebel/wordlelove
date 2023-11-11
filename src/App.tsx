@@ -42,13 +42,14 @@ const App: React.FC = () => {
           // Word not found, so it's not a valid word
           return false;
         }
-        throw new Error("Failed to check word validity");
+        console.error("Failed to check word validity");
+        return false;
       }
       // If the word exists, the API will return a 200 status
       return true;
     } catch (error) {
       console.error("Error checking word validity:", error);
-      throw error; // Or handle error as appropriate for your application
+      return false;
     }
   };
 
@@ -205,6 +206,21 @@ const App: React.FC = () => {
     }
   }, [gameWon]); // Only re-run this effect if gameWon changes
 
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
+    if (invalidWord) {
+      timeoutId = setTimeout(() => {
+        setInvalidWord(false);
+      }, 2000);
+    }
+
+    // Cleanup timeout on unmount or if invalidWord changes
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [invalidWord]);
+
   console.log(correctWord);
   // Render the game board and   keyboard
   return (
@@ -213,14 +229,18 @@ const App: React.FC = () => {
       <hr />
 
       <div className="wordle-container">
-        <div className="invalid-word-message">
-          {invalidWord ? "Invalid word" : " "}
-        </div>
-        <div className="game-lost-message">
-          {gameLost
-            ? `Sorry, you're out of tries! The word was ${correctWord.toUpperCase()}.`
-            : " "}
-        </div>
+        {invalidWord && (
+          <div className="invalid-word-message">Invalid word</div>
+        )}
+        {gameLost && (
+          <div className="game-lost-message">
+            Sorry, you're out of tries! The word was {correctWord.toUpperCase()}
+            .
+            <button className={"play-again-button"} onClick={resetGame}>
+              Play Again
+            </button>
+          </div>
+        )}
         <div className="wordle-board">
           {boardState.map((row, rowIndex) => (
             <div key={rowIndex} className="wordle-row">
@@ -242,7 +262,7 @@ const App: React.FC = () => {
           lettersState={lettersState}
         />
         <div className="win-message">{gameWon && <div>You have won!</div>}</div>
-        {(gameWon || gameLost) && (
+        {gameWon && (
           <button className={"play-again-button"} onClick={resetGame}>
             Play Again
           </button>
