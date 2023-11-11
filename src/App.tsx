@@ -104,15 +104,21 @@ const App: React.FC = () => {
   };
 
   const handleGuessSubmit = async () => {
-    // Call checkWordValidity before finalizing the guess
-    const isValidWord = await checkWordValidity(currentGuess);
-    if (isValidWord) {
-      // If the word is valid, proceed with your existing submit logic
-      setInvalidWord(false);
-      submitGuess();
+    if (currentGuess.toUpperCase() === correctWord.toUpperCase()) {
+      // The guess is correct, proceed with winning logic
+      setGameWon(true);
+      submitGuess(); // Update board state with correct guess
     } else {
-      // If the word is not valid, you might want to notify the user
-      setInvalidWord(true);
+      // If the guess is not correct, check if the word is valid
+      const isValidWord = await checkWordValidity(currentGuess);
+      if (isValidWord) {
+        // If the word is valid but not the correct word, proceed with the guess
+        setInvalidWord(false);
+        submitGuess(); // Update board state with the valid guess
+      } else {
+        // If the word is not valid, notify the user
+        setInvalidWord(true);
+      }
     }
   };
 
@@ -168,14 +174,12 @@ const App: React.FC = () => {
     setLettersState(newLettersState);
 
     // Move to the next try or handle game over conditions
-    if (currentGuess.toUpperCase() === correctWord.toUpperCase()) {
-      // The guess is correct, the game is won
-      setGameWon(true);
-    } else if (currentTry === MAX_TRIES - 1) {
+    if (currentTry === MAX_TRIES - 1) {
       setGameLost(true);
     }
     // Move on to the next try
     setCurrentTry(currentTry + 1);
+    setCurrentGuess("");
   };
 
   // Function to reset the game
