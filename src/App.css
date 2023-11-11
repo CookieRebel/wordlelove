@@ -169,13 +169,13 @@
 @media (max-width: 600px) {
   /* Adjust the max-width as needed */
   .wordle-tile {
-    width: 15vw; /* Increase size to ensure it fits well on smaller screens */
-    height: 15vw;
+    width: 13vw; /* Increase size to ensure it fits well on smaller screens */
+    height: 13vw;
   }
 
   .wordle-key {
     min-width: 8vw; /* Increase key size for better tap accuracy */
-    padding: 10px; /* Increase padding for larger touch area */
+    padding: 2px; /* Increase padding for larger touch area */
   }
 
   /* Adjust the keyboard layout to ensure it's fully visible */

@@ -37,7 +37,7 @@ const Keyboard: React.FC<KeyboardProps> = ({
           disabled={disabled}
           onClick={() => onKeyPress("ENTER")}
         >
-          ENTER
+          ENT
         </button>
         {keysRow3.map(renderKey)}
         <button
