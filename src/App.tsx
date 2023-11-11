@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./App.css";
+import { Words } from "./Words";
 import Keyboard from "./Keyboard";
 // Define types for our game state
 interface Tile {
@@ -22,47 +23,95 @@ const App: React.FC = () => {
   );
   const [correctWord, setCorrectWord] = useState<string>("react"); // This should be randomized
   const [currentTry, setCurrentTry] = useState<number>(0);
-  const [lettersState, setLettersState] = useState<{ [key: string]: string }>(
-    {}
-  );
+  const [lettersState, setLettersState] = useState<{
+    [key: string]: "correct" | "present" | "absent" | "default";
+  }>({});
+
   const [gameWon, setGameWon] = useState<boolean>(false);
+  const [invalidWord, setInvalidWord] = useState<boolean>(false);
+  const [gameLost, setGameLost] = useState<boolean>(false);
+  const [isCelebrating, setIsCelebrating] = useState(false);
+  const availableWords = Words;
+  const checkWordValidity = async (word: string): Promise<boolean> => {
+    try {
+      const response = await fetch(
+        `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
+      );
+      if (!response.ok) {
+        if (response.status === 404) {
+          // Word not found, so it's not a valid word
+          return false;
+        }
+        throw new Error("Failed to check word validity");
+      }
+      // If the word exists, the API will return a 200 status
+      return true;
+    } catch (error) {
+      console.error("Error checking word validity:", error);
+      throw error; // Or handle error as appropriate for your application
+    }
+  };
+
+  const getRandomWord = useCallback((): string => {
+    const randomIndex = Math.floor(Math.random() * availableWords.length);
+    return availableWords[randomIndex].toUpperCase();
+  }, [availableWords]); // Dependencies array ensures this is only redefined if availableWords changes
+
+  useEffect(() => {
+    setCorrectWord(getRandomWord());
+  }, [getRandomWord]);
 
   useEffect(() => {
     console.log("update board state");
-    // This effect updates the board with the current guess
-    const newBoardState = boardState.map((row, index) => {
-      if (index === currentTry) {
-        // Transform the current guess into an array of Tile objects
-        let guessTiles = currentGuess.split("").map(
-          (letter): Tile => ({
-            letter,
-            status: "default",
-          })
-        );
-        // Fill the rest of the row with empty tiles if guess is not complete
-        guessTiles = guessTiles.concat(
-          Array(WORD_LENGTH - guessTiles.length).fill({
-            letter: "",
-            status: "default",
-          })
-        );
-        return guessTiles;
-      }
-      return row;
+
+    setBoardState((prevBoardState) => {
+      const newBoardState = prevBoardState.map((row, index) => {
+        if (index === currentTry) {
+          let guessTiles = currentGuess.split("").map(
+            (letter): Tile => ({
+              letter,
+              status: "default",
+            })
+          );
+          guessTiles = guessTiles.concat(
+            Array(WORD_LENGTH - guessTiles.length).fill({
+              letter: "",
+              status: "default",
+            })
+          );
+          return guessTiles;
+        }
+        return row;
+      });
+      return newBoardState;
     });
-    setBoardState(newBoardState);
-  }, [currentGuess, currentTry]); // Depend on currentGuess and currentTry
+  }, [currentGuess, currentTry]);
 
   const handleKeyPress = (key: string) => {
     if (key === "ENTER") {
       // Your existing logic to handle enter press
-      submitGuess();
+      handleGuessSubmit();
     } else if (key === "DELETE") {
       // Your existing logic to handle backspace
       setCurrentGuess(currentGuess.slice(0, -1));
+      setInvalidWord(false);
     } else if (/^[A-Z]$/.test(key) && currentGuess.length < WORD_LENGTH) {
       // Your existing logic to handle letter input
       setCurrentGuess(`${currentGuess}${key}`);
+      setInvalidWord(false);
+    }
+  };
+
+  const handleGuessSubmit = async () => {
+    // Call checkWordValidity before finalizing the guess
+    const isValidWord = await checkWordValidity(currentGuess);
+    if (isValidWord) {
+      // If the word is valid, proceed with your existing submit logic
+      setInvalidWord(false);
+      submitGuess();
+    } else {
+      // If the word is not valid, you might want to notify the user
+      setInvalidWord(true);
     }
   };
 
@@ -78,8 +127,6 @@ const App: React.FC = () => {
       alert("Guess must be 5 letters");
       return;
     }
-
-    // Optionally, you could check if the guess is a valid word here
 
     // Check each letter in the guess and assign statuses
     const guessTiles: Tile[] = currentGuess
@@ -101,21 +148,33 @@ const App: React.FC = () => {
     console.log("new board state", newBoardState);
     // Reset current guess
     setCurrentGuess("");
+    setGameLost(false);
+
+    const newLettersState = { ...lettersState };
+    guessTiles.forEach((tile) => {
+      if (
+        !newLettersState[tile.letter] ||
+        newLettersState[tile.letter] === "default"
+      ) {
+        newLettersState[tile.letter] = tile.status;
+      } else if (
+        newLettersState[tile.letter] === "present" &&
+        tile.status === "correct"
+      ) {
+        newLettersState[tile.letter] = "correct";
+      }
+    });
+    setLettersState(newLettersState);
 
     // Move to the next try or handle game over conditions
     if (currentGuess.toUpperCase() === correctWord.toUpperCase()) {
       // The guess is correct, the game is won
       setGameWon(true);
-      setCurrentTry(currentTry + 1);
     } else if (currentTry === MAX_TRIES - 1) {
-      // This was the last try, the game is lost
-      alert(
-        `Sorry, you're out of tries! The word was ${correctWord.toUpperCase()}.`
-      );
-    } else {
-      // Move on to the next try
-      setCurrentTry(currentTry + 1);
+      setGameLost(true);
     }
+    // Move on to the next try
+    setCurrentTry(currentTry + 1);
   };
 
   // Function to reset the game
@@ -126,35 +185,67 @@ const App: React.FC = () => {
         Array(WORD_LENGTH).fill({ letter: "", status: "default" })
       )
     );
-    setCorrectWord("PLACE"); // Set this to a new word
+    setCorrectWord(getRandomWord());
     setCurrentGuess("");
     setCurrentTry(0);
     setGameWon(false);
+    setGameLost(false);
+    setLettersState({});
   };
 
-  // Render the game board and keyboard
+  useEffect(() => {
+    if (gameWon) {
+      setIsCelebrating(true);
+      const timeoutId = setTimeout(
+        () => setIsCelebrating(false),
+        600 + (WORD_LENGTH - 1) * 100
+      );
+
+      return () => clearTimeout(timeoutId); // Cleanup the timeout if the component unmounts
+    }
+  }, [gameWon]); // Only re-run this effect if gameWon changes
+
+  console.log(correctWord);
+  // Render the game board and   keyboard
   return (
-    <div className="wordle-container">
-      <div className="wordle-board">
-        {boardState.map((row, rowIndex) => (
-          <div key={rowIndex} className="wordle-row">
-            {row.map((tile, tileIndex) => (
-              <div key={tileIndex} className={`wordle-tile ${tile.status}`}>
-                {tile.letter}
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-      <Keyboard onKeyPress={handleKeyPress} disabled={gameWon} />
-      <div className="win-message">
-        {gameWon ? (
-          <>
-            <div>You have won!</div>
-            <button onClick={resetGame}>Play Again</button>
-          </>
-        ) : (
-          <div>Guess the word!</div>
+    <div className="wordle">
+      <div className="wordle-title">Wordle</div>
+      <hr />
+
+      <div className="wordle-container">
+        <div className="invalid-word-message">
+          {invalidWord ? "Invalid word" : " "}
+        </div>
+        <div className="game-lost-message">
+          {gameLost
+            ? `Sorry, you're out of tries! The word was ${correctWord.toUpperCase()}.`
+            : " "}
+        </div>
+        <div className="wordle-board">
+          {boardState.map((row, rowIndex) => (
+            <div key={rowIndex} className="wordle-row">
+              {row.map((tile, tileIndex) => (
+                <div
+                  className={`wordle-tile ${tile.status} ${
+                    isCelebrating ? `dance-${tileIndex + 1}` : ""
+                  }`}
+                >
+                  {tile.letter}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+        <Keyboard
+          onKeyPress={handleKeyPress}
+          disabled={gameWon}
+          lettersState={lettersState}
+        />
+        <div className="win-message">{gameWon && <div>You have won!</div>}</div>
+        {(gameWon || gameLost) && (
+          <button className={"play-again-button"} onClick={resetGame}>
+            Play Again
+          </button>
         )}
       </div>
     </div>

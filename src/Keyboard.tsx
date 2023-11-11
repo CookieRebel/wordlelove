@@ -3,19 +3,24 @@ import React from "react";
 interface KeyboardProps {
   onKeyPress: (key: string) => void;
   disabled: boolean;
+  lettersState: { [key: string]: "correct" | "present" | "absent" | "default" };
 }
 
 const keysRow1 = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
 const keysRow2 = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
 const keysRow3 = ["Z", "X", "C", "V", "B", "N", "M"];
 
-const Keyboard: React.FC<KeyboardProps> = ({ onKeyPress, disabled }) => {
+const Keyboard: React.FC<KeyboardProps> = ({
+  onKeyPress,
+  disabled,
+  lettersState,
+}) => {
   const renderKey = (key: string) => {
+    const status = lettersState[key] || "default";
     return (
       <button
-        className="wordle-key"
+        className={`wordle-key ${status}`}
         onClick={() => onKeyPress(key)}
-        disabled={disabled}
       >
         {key}
       </button>
