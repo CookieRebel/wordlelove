@@ -209,8 +209,8 @@
 
   .wordle-key {
     min-width: 8vw; /* Increase key size for better tap accuracy */
-    padding: 4px; /* Increase padding for larger touch area */
-    height: 15vw;
+    padding: 8px; /* Increase padding for larger touch area */
+    height: 10vw;
   }
 
   /* Adjust the keyboard layout to ensure it's fully visible */
