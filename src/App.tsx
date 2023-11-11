@@ -199,7 +199,7 @@ const App: React.FC = () => {
       setIsCelebrating(true);
       const timeoutId = setTimeout(
         () => setIsCelebrating(false),
-        600 + (WORD_LENGTH - 1) * 100
+        1200 + (WORD_LENGTH - 1) * 100
       );
 
       return () => clearTimeout(timeoutId); // Cleanup the timeout if the component unmounts
@@ -232,6 +232,15 @@ const App: React.FC = () => {
         {invalidWord && (
           <div className="invalid-word-message">Invalid word</div>
         )}
+        {gameWon && (
+          <div className="win-message">
+            <div>You have won!</div>
+            <button className={"play-again-button"} onClick={resetGame}>
+              Play Again
+            </button>
+          </div>
+        )}
+
         {gameLost && (
           <div className="game-lost-message">
             Sorry, you're out of tries! The word was {correctWord.toUpperCase()}
@@ -261,12 +270,6 @@ const App: React.FC = () => {
           disabled={gameWon}
           lettersState={lettersState}
         />
-        <div className="win-message">{gameWon && <div>You have won!</div>}</div>
-        {gameWon && (
-          <button className={"play-again-button"} onClick={resetGame}>
-            Play Again
-          </button>
-        )}
       </div>
     </div>
   );
