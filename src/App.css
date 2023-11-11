@@ -80,6 +80,8 @@
   margin: 0 3px;
   padding: 10px 15px;
   font-size: 1em;
+  font-weight: bold;
+  color: black;
   cursor: pointer;
   transition: background-color 0.3s;
 }
@@ -93,6 +95,10 @@
   max-width: 95px; /* Adjust size as needed */
 }
 
+.wordle-key.Clarge {
+  flex: 1;
+  max-width: 115px; /* Adjust size as needed */
+}
 /* Style for keys that have been used in a guess */
 .wordle-key.correct,
 .wordle-key.present,
@@ -169,13 +175,14 @@
 @media (max-width: 600px) {
   /* Adjust the max-width as needed */
   .wordle-tile {
-    width: 13vw; /* Increase size to ensure it fits well on smaller screens */
-    height: 13vw;
+    width: 15vw; /* Increase size to ensure it fits well on smaller screens */
+    height: 15vw;
   }
 
   .wordle-key {
     min-width: 8vw; /* Increase key size for better tap accuracy */
-    padding: 2px; /* Increase padding for larger touch area */
+    padding: 4px; /* Increase padding for larger touch area */
+    height: 15vw;
   }
 
   /* Adjust the keyboard layout to ensure it's fully visible */

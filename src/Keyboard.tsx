@@ -33,11 +33,11 @@ const Keyboard: React.FC<KeyboardProps> = ({
       <div className="wordle-keyboard-row">{keysRow2.map(renderKey)}</div>
       <div className="wordle-keyboard-row">
         <button
-          className="wordle-key large"
+          className="wordle-key xlarge"
           disabled={disabled}
           onClick={() => onKeyPress("ENTER")}
         >
-          ENT
+          ENTER
         </button>
         {keysRow3.map(renderKey)}
         <button
