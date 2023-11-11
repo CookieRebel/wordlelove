@@ -64,7 +64,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 0px;
 }
 
 .wordle-keyboard-row {
@@ -95,10 +95,6 @@
   max-width: 95px; /* Adjust size as needed */
 }
 
-.wordle-key.Clarge {
-  flex: 1;
-  max-width: 115px; /* Adjust size as needed */
-}
 /* Style for keys that have been used in a guess */
 .wordle-key.correct,
 .wordle-key.present,
