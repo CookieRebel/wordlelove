@@ -26,7 +26,7 @@ const App: React.FC = () => {
   const [lettersState, setLettersState] = useState<{
     [key: string]: "correct" | "present" | "absent" | "default";
   }>({});
-
+  const [showGameWonMessage, setShowGameWonMessage] = useState(false);
   const [gameWon, setGameWon] = useState<boolean>(false);
   const [invalidWord, setInvalidWord] = useState<boolean>(false);
   const [gameLost, setGameLost] = useState<boolean>(false);
@@ -194,6 +194,7 @@ const App: React.FC = () => {
     setCurrentGuess("");
     setCurrentTry(0);
     setGameWon(false);
+    setShowGameWonMessage(false);
     setGameLost(false);
     setLettersState({});
   };
@@ -201,10 +202,10 @@ const App: React.FC = () => {
   useEffect(() => {
     if (gameWon) {
       setIsCelebrating(true);
-      const timeoutId = setTimeout(
-        () => setIsCelebrating(false),
-        1200 + (WORD_LENGTH - 1) * 100
-      );
+      const timeoutId = setTimeout(() => {
+        setIsCelebrating(false);
+        setShowGameWonMessage(true);
+      }, 1200 + (WORD_LENGTH - 1) * 100);
 
       return () => clearTimeout(timeoutId); // Cleanup the timeout if the component unmounts
     }
@@ -236,7 +237,7 @@ const App: React.FC = () => {
         {invalidWord && (
           <div className="invalid-word-message">Invalid word</div>
         )}
-        {gameWon && (
+        {showGameWonMessage && (
           <div className="win-message">
             <div>You have won!</div>
             <button className={"play-again-button"} onClick={resetGame}>
