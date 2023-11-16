@@ -143,10 +143,12 @@
   background-color: white;
 }
 .game-lost-message {
-  color: #6aaa64;
 }
+
 .invalid-word-message {
-  color: red;
+  color: white;
+  background-color: black;
+  padding: 5px;
 }
 
 @keyframes dance {
@@ -194,6 +196,30 @@
 }
 .wordle-tile.correct.dance-5 {
   animation-delay: 0.5s;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-10px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(10px);
+  }
+}
+
+.wordle-tile.shake {
+  animation: shake 1s ease-in-out;
 }
 
 @media (max-width: 600px) {

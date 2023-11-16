@@ -31,6 +31,7 @@ const App: React.FC = () => {
   const [invalidWord, setInvalidWord] = useState<boolean>(false);
   const [gameLost, setGameLost] = useState<boolean>(false);
   const [isCelebrating, setIsCelebrating] = useState(false);
+  const [shakeTiles, setShakeTiles] = useState(false);
   const availableWords = Words;
   const checkWordValidity = async (word: string): Promise<boolean> => {
     try {
@@ -118,6 +119,10 @@ const App: React.FC = () => {
       } else {
         // If the word is not valid, notify the user
         setInvalidWord(true);
+        setShakeTiles(true);
+        setTimeout(() => {
+          setShakeTiles(false);
+        }, 500); // Reset after the animation duration  (500ms)
       }
     }
   };
@@ -174,7 +179,7 @@ const App: React.FC = () => {
     setLettersState(newLettersState);
 
     // Move to the next try or handle game over conditions
-    if (currentTry === MAX_TRIES - 1) {
+    if (currentTry === MAX_TRIES - 1 && !gameWon) {
       setGameLost(true);
     }
     // Move on to the next try
@@ -234,9 +239,6 @@ const App: React.FC = () => {
       <hr />
 
       <div className="wordle-container">
-        {invalidWord && (
-          <div className="invalid-word-message">Invalid word</div>
-        )}
         {showGameWonMessage && (
           <div className="win-message">
             <div>You have won!</div>
@@ -248,11 +250,14 @@ const App: React.FC = () => {
 
         {gameLost && (
           <div className="game-lost-message">
-            Sorry, you're out of tries! The word was {correctWord.toUpperCase()}
-            .
-            <button className={"play-again-button"} onClick={resetGame}>
-              Play Again
-            </button>
+            Sorry, you're out of tries!
+            <br />
+            The word was {correctWord.toUpperCase()}.
+            <div>
+              <button className={"play-again-button"} onClick={resetGame}>
+                Play Again
+              </button>
+            </div>
           </div>
         )}
         <div className="wordle-board">
@@ -262,7 +267,7 @@ const App: React.FC = () => {
                 <div
                   className={`wordle-tile ${tile.status} ${
                     isCelebrating ? `dance-${tileIndex + 1}` : ""
-                  }`}
+                  } ${shakeTiles && rowIndex === currentTry ? "shake" : ""}`}
                 >
                   {tile.letter}
                 </div>
@@ -270,6 +275,10 @@ const App: React.FC = () => {
             </div>
           ))}
         </div>
+        {invalidWord && (
+          <div className="invalid-word-message">Not in the word list</div>
+        )}
+
         <Keyboard
           onKeyPress={handleKeyPress}
           disabled={gameWon}
