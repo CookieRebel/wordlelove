@@ -105,6 +105,7 @@ const App: React.FC = () => {
   };
 
   const handleGuessSubmit = async () => {
+    console.log("handleGuessSubmit");
     if (currentGuess.toUpperCase() === correctWord.toUpperCase()) {
       // The guess is correct, proceed with winning logic
       setGameWon(true);
@@ -136,11 +137,10 @@ const App: React.FC = () => {
     }
     // Ensure the guess is the correct length
     if (currentGuess.length !== WORD_LENGTH) {
-      alert("Guess must be 5 letters");
       return;
     }
 
-    // Check each letter in the guess and assign statuses
+    // Check each letter in the guess and assign colour statuses
     const guessTiles: Tile[] = currentGuess
       .split("")
       .map((letter, index): Tile => {
@@ -177,9 +177,11 @@ const App: React.FC = () => {
       }
     });
     setLettersState(newLettersState);
+    console.log("Current try", currentTry);
 
     // Move to the next try or handle game over conditions
     if (currentTry === MAX_TRIES - 1 && !gameWon) {
+      console.log("Out of tries");
       setGameLost(true);
     }
     // Move on to the next try
@@ -265,6 +267,7 @@ const App: React.FC = () => {
             <div key={rowIndex} className="wordle-row">
               {row.map((tile, tileIndex) => (
                 <div
+                  key={"tile-" + tileIndex}
                   className={`wordle-tile ${tile.status} ${
                     isCelebrating ? `dance-${tileIndex + 1}` : ""
                   } ${shakeTiles && rowIndex === currentTry ? "shake" : ""}`}

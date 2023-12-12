@@ -21,6 +21,7 @@ const Keyboard: React.FC<KeyboardProps> = ({
       <button
         className={`wordle-key ${status}`}
         onClick={() => onKeyPress(key)}
+        key={key}
       >
         {key}
       </button>
@@ -29,13 +30,18 @@ const Keyboard: React.FC<KeyboardProps> = ({
 
   return (
     <div className="wordle-keyboard">
-      <div className="wordle-keyboard-row">{keysRow1.map(renderKey)}</div>
-      <div className="wordle-keyboard-row">{keysRow2.map(renderKey)}</div>
-      <div className="wordle-keyboard-row">
+      <div className="wordle-keyboard-row" key={"row1"}>
+        {keysRow1.map(renderKey)}
+      </div>
+      <div className="wordle-keyboard-row" key={"row2"}>
+        {keysRow2.map(renderKey)}
+      </div>
+      <div className="wordle-keyboard-row" key={"row3"}>
         <button
           className="wordle-key xlarge"
           disabled={disabled}
           onClick={() => onKeyPress("ENTER")}
+          key="ENTER"
         >
           ENTER
         </button>
@@ -44,6 +50,7 @@ const Keyboard: React.FC<KeyboardProps> = ({
           className="wordle-key large"
           disabled={disabled}
           onClick={() => onKeyPress("DELETE")}
+          key={"DELETE"}
         >
           DEL
         </button>
