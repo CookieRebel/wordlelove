@@ -1,9 +1,17 @@
 import React from "react";
-import { IMessage } from "./types";
+import { IMessageLost } from "./types";
 
-const LostMessage: React.FC<IMessage> = ({ onReset, correctWord }) => (
+const LostMessage: React.FC<IMessageLost> = ({
+  onReset,
+  correctWord,
+  player1,
+  player2,
+}) => (
   <div className="game-lost-message">
-    <div className={"correct-word"}>{correctWord.toUpperCase()}</div>
+    <div>
+      {player1} and {player2} lost! The correct word was{" "}
+      {correctWord.toUpperCase()}.
+    </div>
     <button className={"play-again-button"} onClick={onReset}>
       Play Again
     </button>

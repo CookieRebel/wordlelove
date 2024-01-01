@@ -30,6 +30,19 @@ const useWordle = () => {
   const [invalidWord, setInvalidWord] = useState(false);
   const [gameLost, setGameLost] = useState(false);
   const [shakeTiles, setShakeTiles] = useState(false);
+  const [currentPlayer, setCurrentPlayer] = useState(1); // 1 for Player 1, 2 for Player 2
+  const [isGameStarted, setIsGameStarted] = useState(false);
+  const [startingPlayer, setStartingPlayer] = useState(1); // 1 for Player 1, 2 for Player 2
+  const alternatePlayer = () => {
+    setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
+  };
+
+  const alternateStartingPlayer = () => {
+    const newStartingPlayer = startingPlayer === 1 ? 2 : 1;
+    console.log("lternate starting player", newStartingPlayer);
+    setStartingPlayer(newStartingPlayer);
+    setCurrentPlayer(newStartingPlayer);
+  };
 
   // Function to get a random word from the Words list
   const getRandomWord = useCallback((): string => {
@@ -119,6 +132,11 @@ const useWordle = () => {
       }, 2000); // Delay for lose animation
     }
 
+    if (!isWinningGuess) {
+      setTimeout(() => {
+        alternatePlayer();
+      }, 2000);
+    }
     // Reset current guess
     setCurrentGuess("");
   }, [
@@ -163,6 +181,7 @@ const useWordle = () => {
     setGameWon(false);
     setGameLost(false);
     setLettersState({});
+    alternateStartingPlayer();
   };
 
   // Effect to update the board state when the current guess changes
@@ -210,18 +229,21 @@ const useWordle = () => {
   // Effect to handle key presses
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Enter") {
-        // handle enter
-        processGuess();
-      } else if (event.key === "Backspace") {
-        // handle backspace
-        setCurrentGuess(currentGuess.slice(0, -1));
-      } else if (
-        /^[A-Za-z]$/.test(event.key) &&
-        currentGuess.length < WORD_LENGTH
-      ) {
-        // handle letter input
-        setCurrentGuess(currentGuess + event.key.toUpperCase());
+      console.log("key down", event.key);
+      if (isGameStarted) {
+        if (event.key === "Enter") {
+          // handle enter
+          processGuess();
+        } else if (event.key === "Backspace") {
+          // handle backspace
+          setCurrentGuess(currentGuess.slice(0, -1));
+        } else if (
+          /^[A-Za-z]$/.test(event.key) &&
+          currentGuess.length < WORD_LENGTH
+        ) {
+          // handle letter input
+          setCurrentGuess(currentGuess + event.key.toUpperCase());
+        }
       }
     };
 
@@ -244,6 +266,9 @@ const useWordle = () => {
     handleKeyPress,
     processGuess,
     resetGame,
+    currentPlayer,
+    isGameStarted,
+    setIsGameStarted,
   };
 };
 

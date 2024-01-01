@@ -210,3 +210,32 @@
 .wordle-tile.flip {
   animation: flipTileVertical 1.2s ease forwards;
 }
+
+/* App.css or a separate CSS file for PlayerNameInput */
+
+.player-name-input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 434px;
+}
+
+.player-name-input-container input {
+  margin: 10px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.player-name-input-container button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.current-player-indicator {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 10px 0;
+}

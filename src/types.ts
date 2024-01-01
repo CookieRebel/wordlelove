@@ -4,9 +4,16 @@ export interface ITileProps {
   isShaking: boolean;
 }
 
-export interface IMessage {
+export interface IMessageWon {
+  onReset: () => void;
+  currentPlayer: string;
+}
+
+export interface IMessageLost {
   onReset: () => void;
   correctWord: string;
+  player1?: string;
+  player2?: string;
 }
 
 export interface ITile {
