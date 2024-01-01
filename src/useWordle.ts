@@ -33,9 +33,6 @@ const useWordle = () => {
   const [currentPlayer, setCurrentPlayer] = useState(1); // 1 for Player 1, 2 for Player 2
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [startingPlayer, setStartingPlayer] = useState(1); // 1 for Player 1, 2 for Player 2
-  const alternatePlayer = () => {
-    setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
-  };
 
   const alternateStartingPlayer = () => {
     const newStartingPlayer = startingPlayer === 1 ? 2 : 1;
@@ -79,6 +76,10 @@ const useWordle = () => {
   };
 
   const processGuess = useCallback(async () => {
+    const alternatePlayer = () => {
+      setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
+    };
+
     // Check for game over or invalid guess length
     if (gameWon || gameLost || currentGuess.length !== WORD_LENGTH) {
       return;
@@ -252,7 +253,7 @@ const useWordle = () => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [currentGuess, processGuess]);
+  }, [currentGuess, processGuess, isGameStarted]);
 
   return {
     boardState,
