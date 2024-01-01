@@ -65,67 +65,77 @@ const useWordle = () => {
     }
   };
 
-  // Function to submit a guess
-  const submitGuess = () => {
-    console.log("submit guess");
-
-    // Prevent submission if the game is already won or if the guess is the wrong length
-    if (gameWon || currentGuess.length !== WORD_LENGTH) {
+  const processGuess = useCallback(async () => {
+    // Check for game over or invalid guess length
+    if (gameWon || gameLost || currentGuess.length !== WORD_LENGTH) {
       return;
     }
 
-    // Check each letter in the guess and assign color statuses
-    const guessTiles: ITile[] = currentGuess
-      .split("")
-      .map((letter, index): ITile => {
-        if (correctWord[index].toUpperCase() === letter) {
-          return { letter, status: "correct" as const }; // Correct position
-        } else if (correctWord.toUpperCase().includes(letter)) {
-          return { letter, status: "present" as const }; // Wrong position, but present
-        } else {
-          return { letter, status: "absent" as const }; // Not present in the word at all
-        }
-      });
+    let isWinningGuess = false;
 
-    // Update the letters state with the new guess
+    if (currentGuess.toUpperCase() === correctWord.toUpperCase()) {
+      isWinningGuess = true;
+      setTimeout(() => {
+        setGameWon(true);
+      }, 2000); // Delay for win animation
+    } else {
+      // Validate the word if it's not a winning guess
+      const isValidWord = await checkWordValidity(currentGuess);
+      if (!isValidWord) {
+        setInvalidWord(true);
+        setShakeTiles(true);
+        setTimeout(() => {
+          setShakeTiles(false);
+        }, 500);
+        return;
+      }
+    }
+    // Process guess tiles and update board and letters state
+    const guessTiles: Tile[] = currentGuess.split("").map((letter, index) => {
+      if (correctWord[index].toUpperCase() === letter) {
+        return { letter, status: "correct" as "correct" }; // Explicitly cast the status
+      } else if (correctWord.toUpperCase().includes(letter)) {
+        return { letter, status: "present" as "present" }; // Explicitly cast the status
+      } else {
+        return { letter, status: "absent" as "absent" }; // Explicitly cast the status
+      }
+    });
+
+    const newBoardState = [...boardState];
+    newBoardState[currentTry] = guessTiles;
+    setBoardState(newBoardState);
+
     const newLettersState = { ...lettersState };
     guessTiles.forEach((tile) => {
       newLettersState[tile.letter] = tile.status;
     });
     setLettersState(newLettersState);
 
-    // Check if the current guess is the correct word
-    const isWinningGuess =
-      currentGuess.toUpperCase() === correctWord.toUpperCase();
-
-    // Update the board state with the new guess
-    const newBoardState = [...boardState];
-    newBoardState[currentTry] = guessTiles;
-    setBoardState(newBoardState);
-
-    if (isWinningGuess) {
-      // If the guess wins the game, trigger any win animations or actions here
-      // For example, set a state to trigger the "dance" animation
-      return; // End function execution after winning
-    }
-
-    // Update current try, and check for game over condition
+    // Update current try and check for game over
     setCurrentTry(currentTry + 1);
-    if (currentTry === MAX_TRIES - 1) {
+    if (currentTry === MAX_TRIES - 1 && !isWinningGuess) {
       setTimeout(() => {
         setGameLost(true);
-      }, 2000); // Wait for the tiles to turn around plus 800ms
+      }, 2000); // Delay for lose animation
     }
 
     // Reset current guess
     setCurrentGuess("");
-  };
+  }, [
+    currentGuess,
+    correctWord,
+    currentTry,
+    gameWon,
+    gameLost,
+    lettersState,
+    boardState,
+  ]);
 
   // Function to handle key presses
   const handleKeyPress = (key: string) => {
     if (key === "ENTER") {
       // Your existing logic to handle enter press
-      handleGuessSubmit();
+      processGuess();
     } else if (key === "DELETE") {
       // Your existing logic to handle backspace
       setCurrentGuess(currentGuess.slice(0, -1));
@@ -134,33 +144,6 @@ const useWordle = () => {
       // Your existing logic to handle letter input
       setCurrentGuess(`${currentGuess}${key}`);
       setInvalidWord(false);
-    }
-  };
-
-  // Function to handle guess submission
-  const handleGuessSubmit = async () => {
-    console.log("handleGuessSubmit");
-    if (currentGuess.toUpperCase() === correctWord.toUpperCase()) {
-      // The guess is correct, proceed with winning logic
-      setTimeout(() => {
-        setGameWon(true);
-      }, 2000); // Wait for the tiles to turn around, plus 800 ms
-      submitGuess(); // Update board state with correct guess
-    } else {
-      // If the guess is not correct, check if the word is valid
-      const isValidWord = await checkWordValidity(currentGuess);
-      if (isValidWord) {
-        // If the word is valid but not the correct word, proceed with the guess
-        setInvalidWord(false);
-        submitGuess(); // Update board state with the valid guess
-      } else {
-        // If the word is not valid, notify the user
-        setInvalidWord(true);
-        setShakeTiles(true);
-        setTimeout(() => {
-          setShakeTiles(false);
-        }, 500); // Reset after the animation duration  (500ms)
-      }
     }
   };
 
@@ -229,7 +212,7 @@ const useWordle = () => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Enter") {
         // handle enter
-        handleGuessSubmit();
+        processGuess();
       } else if (event.key === "Backspace") {
         // handle backspace
         setCurrentGuess(currentGuess.slice(0, -1));
@@ -247,7 +230,7 @@ const useWordle = () => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [currentGuess, handleGuessSubmit]);
+  }, [currentGuess, processGuess]);
 
   return {
     boardState,
@@ -259,7 +242,7 @@ const useWordle = () => {
     gameLost,
     shakeTiles,
     handleKeyPress,
-    handleGuessSubmit,
+    processGuess,
     resetGame,
   };
 };

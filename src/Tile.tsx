@@ -20,7 +20,7 @@ const Tile: React.FC<ITileProps> = ({ tile, tileIndex, isShaking }) => {
       setDefaultState(true);
     }
     setPrevStatus(tile.status);
-  }, [tile.status]);
+  }, [tile.status, prevStatus]);
 
   const flipDelay = 0.1 * tileIndex; // delay between each tile flip
 
