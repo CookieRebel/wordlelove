@@ -142,8 +142,6 @@
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Optional: adds subtle shadow */
   background-color: white;
 }
-.game-lost-message {
-}
 
 .invalid-word-message {
   color: white;
