@@ -29,7 +29,6 @@ const useWordle = () => {
   const [gameWon, setGameWon] = useState(false);
   const [invalidWord, setInvalidWord] = useState(false);
   const [gameLost, setGameLost] = useState(false);
-  const [isCelebrating, setIsCelebrating] = useState(false);
   const [shakeTiles, setShakeTiles] = useState(false);
 
   // Function to get a random word from the Words list
@@ -40,7 +39,7 @@ const useWordle = () => {
 
   useEffect(() => {
     const randomWord = getRandomWord();
-    console.log("Random word", randomWord);
+    console.log("Correct word", randomWord);
     setCorrectWord(randomWord);
   }, [getRandomWord]);
 
@@ -98,9 +97,6 @@ const useWordle = () => {
     // Check if the current guess is the correct word
     const isWinningGuess =
       currentGuess.toUpperCase() === correctWord.toUpperCase();
-    if (isWinningGuess) {
-      setGameWon(true);
-    }
 
     // Update the board state with the new guess
     const newBoardState = [...boardState];
@@ -110,14 +106,15 @@ const useWordle = () => {
     if (isWinningGuess) {
       // If the guess wins the game, trigger any win animations or actions here
       // For example, set a state to trigger the "dance" animation
-      setIsCelebrating(true);
       return; // End function execution after winning
     }
 
     // Update current try, and check for game over condition
     setCurrentTry(currentTry + 1);
     if (currentTry === MAX_TRIES - 1) {
-      setGameLost(true);
+      setTimeout(() => {
+        setGameLost(true);
+      }, 2000); // Wait for the tiles to turn around plus 800ms
     }
 
     // Reset current guess
@@ -145,7 +142,9 @@ const useWordle = () => {
     console.log("handleGuessSubmit");
     if (currentGuess.toUpperCase() === correctWord.toUpperCase()) {
       // The guess is correct, proceed with winning logic
-      setGameWon(true);
+      setTimeout(() => {
+        setGameWon(true);
+      }, 2000); // Wait for the tiles to turn around, plus 800 ms
       submitGuess(); // Update board state with correct guess
     } else {
       // If the guess is not correct, check if the word is valid
@@ -173,7 +172,9 @@ const useWordle = () => {
         Array(WORD_LENGTH).fill({ letter: "", status: "default" })
       )
     );
-    setCorrectWord(getRandomWord());
+    const randomWord = getRandomWord();
+    console.log("Correct word", randomWord);
+    setCorrectWord(randomWord);
     setCurrentGuess("");
     setCurrentTry(0);
     setGameWon(false);
@@ -209,17 +210,6 @@ const useWordle = () => {
   }, [currentGuess, currentTry]);
 
   useEffect(() => {
-    if (gameWon) {
-      setIsCelebrating(true);
-      const timeoutId = setTimeout(() => {
-        setIsCelebrating(false);
-      }, 1200 + (WORD_LENGTH - 1) * 100);
-
-      return () => clearTimeout(timeoutId); // Cleanup the timeout if the component unmounts
-    }
-  }, [gameWon]); // Only re-run this effect if gameWon changes
-
-  useEffect(() => {
     let timeoutId: NodeJS.Timeout;
 
     if (invalidWord) {
@@ -234,6 +224,31 @@ const useWordle = () => {
     };
   }, [invalidWord]);
 
+  // Effect to handle key presses
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Enter") {
+        // handle enter
+        handleGuessSubmit();
+      } else if (event.key === "Backspace") {
+        // handle backspace
+        setCurrentGuess(currentGuess.slice(0, -1));
+      } else if (
+        /^[A-Za-z]$/.test(event.key) &&
+        currentGuess.length < WORD_LENGTH
+      ) {
+        // handle letter input
+        setCurrentGuess(currentGuess + event.key.toUpperCase());
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [currentGuess, handleGuessSubmit]);
+
   return {
     boardState,
     correctWord,
@@ -242,7 +257,6 @@ const useWordle = () => {
     gameWon,
     invalidWord,
     gameLost,
-    isCelebrating,
     shakeTiles,
     handleKeyPress,
     handleGuessSubmit,

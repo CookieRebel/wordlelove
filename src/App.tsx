@@ -11,7 +11,6 @@ const App: React.FC = () => {
   const {
     boardState,
     lettersState,
-    isCelebrating,
     shakeTiles,
     gameWon,
     gameLost,
@@ -22,7 +21,6 @@ const App: React.FC = () => {
     handleKeyPress,
   } = useWordle();
 
-  console.log(correctWord);
   // Render the game board and   keyboard
   return (
     <div className="wordle">
@@ -39,7 +37,6 @@ const App: React.FC = () => {
         )}
         <GameBoard
           boardState={boardState}
-          isCelebrating={isCelebrating}
           shakeTiles={shakeTiles}
           currentTry={currentTry}
         />

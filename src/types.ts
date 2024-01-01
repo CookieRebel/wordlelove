@@ -1,6 +1,5 @@
 export interface ITileProps {
   tile: ITile;
-  isCelebrating: boolean;
   tileIndex: number;
   isShaking: boolean;
 }
