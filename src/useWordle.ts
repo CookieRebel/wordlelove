@@ -77,7 +77,7 @@ const useWordle = () => {
 
   const processGuess = useCallback(async () => {
     const alternatePlayer = () => {
-      setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
+      setCurrentPlayer((prevPlayer) => (prevPlayer === 1 ? 2 : 1));
     };
 
     // Check for game over or invalid guess length
