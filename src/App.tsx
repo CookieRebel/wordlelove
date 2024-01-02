@@ -91,22 +91,30 @@ const App: React.FC = () => {
     setShowHowToPlay(false);
   };
 
-  let currentPlayerName = currentPlayer === 1 ? player1 : player2;
-
   // Conditional rendering based on the game state
   const renderContent = () => {
     if (!isGameStarted) {
       // Render the player name input screen
       return (
-        <PlayerNameInput
-          player1={player1}
-          player2={player2}
-          setPlayer1={setPlayer1}
-          setPlayer2={setPlayer2}
-          inputStage={inputStage}
-          setInputStage={setInputStage}
-          onSubmit={handlePlayerNameSubmit}
-        />
+        <>
+          <PlayerNameInput
+            player1={player1}
+            player2={player2}
+            setPlayer1={setPlayer1}
+            setPlayer2={setPlayer2}
+            inputStage={inputStage}
+            setInputStage={setInputStage}
+            onSubmit={handlePlayerNameSubmit}
+          />
+          <Keyboard
+            onKeyPress={
+              isGameStarted ? handleKeyPress : handlePlayerNameKeyPress
+            }
+            disabled={gameWon}
+            lettersState={lettersState}
+          />
+          ;
+        </>
       );
     } else {
       // Render the main game screen
@@ -137,10 +145,13 @@ const App: React.FC = () => {
           />
           {invalidWord && <InvalidWordMessage />}
           <Keyboard
-            onKeyPress={handleKeyPress}
-            disabled={gameWon || gameLost}
+            onKeyPress={
+              isGameStarted ? handleKeyPress : handlePlayerNameKeyPress
+            }
+            disabled={gameWon}
             lettersState={lettersState}
           />
+          ;
         </>
       );
     }
