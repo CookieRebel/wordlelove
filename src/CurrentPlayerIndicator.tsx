@@ -8,7 +8,7 @@ const CurrentPlayerIndicator: React.FC<CurrentPlayerIndicatorProps> = ({
   currentPlayerName,
 }) => {
   return (
-    <div className="current-player-indicator">{currentPlayerName}'s turn</div>
+    <div className="current-player-indicator">{currentPlayerName}'S TURN</div>
   );
 };
 

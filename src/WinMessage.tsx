@@ -1,11 +1,17 @@
 import React from "react";
 import { IMessageWon } from "./types";
 
-const WinMessage: React.FC<IMessageWon> = ({ onReset, currentPlayer }) => (
+const WinMessage: React.FC<IMessageWon> = ({
+  onReset,
+  correctWord,
+  currentPlayer,
+}) => (
   <div className="win-message">
-    <div>{currentPlayer} won!</div>
+    <div>
+      The word is {correctWord}. {currentPlayer} won!
+    </div>
     <button className={"play-again-button"} onClick={onReset}>
-      Play Again
+      Next Game
     </button>
   </div>
 );

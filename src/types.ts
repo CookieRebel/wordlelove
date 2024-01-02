@@ -7,6 +7,7 @@ export interface ITileProps {
 export interface IMessageWon {
   onReset: () => void;
   currentPlayer: string;
+  correctWord: string;
 }
 
 export interface IMessageLost {

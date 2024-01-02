@@ -1,0 +1,77 @@
+/* StartScreen.css */
+
+.start-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* Use min-height to ensure the screen always fills the viewport */
+  padding: 2rem;
+  box-sizing: border-box;
+  background-color: #f0f0f0;
+}
+
+.start-screen-logo {
+  /* Use a placeholder background color since the logo is not accessible */
+  background-color: #000; /* Replace with your logo as a background image */
+  background-image: url("../public/wordle-icon.svg"); /* Replace with the path to your logo file */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 100px; /* Adjust size as necessary */
+  height: 100px; /* Adjust size as necessary */
+  margin-bottom: 2rem;
+}
+
+.start-screen h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 1rem 0;
+}
+
+.start-screen p {
+  font-size: 2rem;
+  font-weight: 500;
+  margin-bottom: 2rem;
+  width: 500px;
+  text-align: center;
+}
+
+.button-container {
+  display: flex;
+  gap: 1rem; /* Adjust the space between buttons */
+}
+
+.start-screen button {
+  padding: 10px 25px; /* Adjust padding as necessary */
+  font-size: 1rem;
+  border: 2px solid #000; /* Adjust color as necessary */
+  border-radius: 20px;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.start-screen button:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+.start-screen .play-button {
+  background-color: #000;
+  color: #fff;
+}
+
+.footer {
+  position: absolute;
+  bottom: 20px; /* Adjust the footer height from bottom as needed */
+  width: 100%;
+  font-size: 0.875rem;
+  color: #777;
+  text-align: center;
+}
+
+.footer span {
+  display: block;
+  margin: 4px 0;
+}
