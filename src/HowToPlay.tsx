@@ -24,8 +24,15 @@ const HowToPlay: React.FC<HowToPlayProps> = ({ onClose }) => {
             After each guess, the color of the tiles will change to show how
             close your guess was to the word.
           </li>
+          <li>
+            Players alternate guesses within one game. The player whose turn to
+            guess it is is shown at the top.
+          </li>
         </ul>
-        <p>Player 1 and player 2 alternate starting each successive game.</p>
+        <p>
+          Players also alternate successive games: player 1 starts the first
+          game, player 2 starts the 2nd game, and so on.
+        </p>
         <p>Examples</p>
         <div>
           <span className="letter correct">W</span>
