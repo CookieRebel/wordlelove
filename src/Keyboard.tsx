@@ -38,7 +38,7 @@ const Keyboard: React.FC<KeyboardProps> = ({
       </div>
       <div className="wordle-keyboard-row" key={"row3"}>
         <button
-          className="wordle-key xlarge"
+          className="wordle-key large"
           disabled={disabled}
           onClick={() => onKeyPress("ENTER")}
           key="ENTER"
@@ -52,7 +52,11 @@ const Keyboard: React.FC<KeyboardProps> = ({
           onClick={() => onKeyPress("DELETE")}
           key={"DELETE"}
         >
-          DEL
+          <img
+            src={"/backspace.png"}
+            alt={"backspace"}
+            className={"backspace"}
+          />
         </button>
       </div>
     </div>

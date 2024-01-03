@@ -16,7 +16,7 @@
 .how-to-play-container {
   background: white;
   padding: 20px;
-  width: 80%;
+  width: 0%;
   max-width: 500px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -88,8 +88,9 @@
 /* Responsive styling for smaller screens */
 @media (max-width: 600px) {
   .how-to-play-container {
-    width: 95%;
+    width: 100%;
     padding: 10px;
+    border-radius: 0px;
   }
 
   .how-to-play-container h1 {
