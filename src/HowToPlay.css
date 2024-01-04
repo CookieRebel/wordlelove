@@ -95,7 +95,7 @@
     border-radius: 0;
     overflow-y: scroll; /* allow scrolling within the container */
     padding: 20px; /* adjust padding for mobile */
-    padding-top: 50px;
+    padding-top: 100px;
   }
 
   .how-to-play-container h1,
@@ -106,7 +106,7 @@
 
   .close-button {
     position: absolute;
-    top: 50px;
+    top: 100px;
     right: 20px;
     /* other styles */
   }
