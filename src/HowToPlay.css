@@ -11,12 +11,13 @@
   justify-content: center;
   align-items: center;
   z-index: 1000; /* Ensure it's above all other content */
+  overflow-y: auto; /* Allow scrolling */
 }
 
 .how-to-play-container {
   background: white;
   padding: 20px;
-  width: 0%;
+  width: 100%;
   max-width: 500px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -88,17 +89,27 @@
 /* Responsive styling for smaller screens */
 @media (max-width: 600px) {
   .how-to-play-container {
-    width: 100%;
-    padding: 10px;
-    border-radius: 0px;
+    position: relative; /* Add relative positioning */
+    /*min-height: 100%; !* instead of 100vh *!*/
+    width: 100%; /* ensure full width */
+    border-radius: 0;
+    overflow-y: scroll; /* allow scrolling within the container */
+    padding: 20px; /* adjust padding for mobile */
+    padding-top: 50px;
   }
 
-  .how-to-play-container h1 {
-    font-size: 28px;
-  }
-
+  .how-to-play-container h1,
   .how-to-play-container p,
   .how-to-play-container li {
-    font-size: 18px;
+    font-size: 16px; /* adjust font size */
   }
+
+  .close-button {
+    position: absolute;
+    top: 50px;
+    right: 20px;
+    /* other styles */
+  }
+
+  /* Adjust other styles as necessary */
 }

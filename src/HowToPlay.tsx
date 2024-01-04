@@ -30,8 +30,9 @@ const HowToPlay: React.FC<HowToPlayProps> = ({ onClose }) => {
           </li>
         </ul>
         <p>
-          Players also alternate successive games: player 1 starts the first
-          game, player 2 starts the 2nd game, and so on.
+          You can play as many games as you like. Players alternate successive
+          games: player 1 starts the first game, player 2 starts the 2nd game,
+          and so on.
         </p>
         <p>Examples</p>
         <div>

@@ -26,7 +26,7 @@
 .start-screen h1 {
   font-size: 3rem;
   font-weight: 700;
-  margin: 1rem 0;
+  margin: 10px;
 }
 
 .start-screen p {
@@ -63,8 +63,7 @@
 }
 
 .footer {
-  position: absolute;
-  bottom: 20px; /* Adjust the footer height from bottom as needed */
+  margin-top: 2rem;
   width: 100%;
   font-size: 0.875rem;
   color: #777;

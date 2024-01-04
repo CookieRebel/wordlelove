@@ -1,9 +1,20 @@
-.wordle-title {
+.title-row {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+}
+
+.wordle-title {
   font-size: 36px;
   font-weight: bold;
+}
+
+.help-icon {
+  margin-left: auto;
+  cursor: pointer;
+  margin-right: 10px;
+  height: 28px;
+  width: 28px;
 }
 
 .wordle-container {
@@ -179,6 +190,18 @@
 }
 
 @media (max-width: 600px) {
+  .wordle-title {
+    font-size: 30px;
+    font-weight: bold;
+    display: block;
+    padding-left: 10px;
+  }
+
+  .help-icon {
+    height: 20px;
+    width: 20px;
+  }
+
   /* Adjust the max-width as needed */
   .wordle-tile {
     width: 15vw; /* Increase size to ensure it fits well on smaller screens */
@@ -191,7 +214,7 @@
     /*min-width: 8vw; !* Increase key size for better tap accuracy *!*/
     /*padding: 8px; !* Increase padding for larger touch area *!*/
     /*height: 10vw;*/
-    padding: 20px 8px;
+    padding: 15px 8px;
   }
 
   /* Adjust the keyboard layout to ensure it's fully visible */
@@ -245,11 +268,4 @@
   font-size: 24px;
   font-weight: bold;
   margin: 10px 0;
-}
-
-.help-icon {
-  position: absolute;
-  right: 20px;
-  top: 10px;
-  cursor: pointer;
 }
