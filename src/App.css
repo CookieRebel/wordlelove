@@ -7,6 +7,14 @@
 .wordle-title {
   font-size: 36px;
   font-weight: bold;
+  padding-left: 10px;
+}
+
+.wordle-score {
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 25px;
+  font-weight: bold;
 }
 
 .help-icon {
@@ -89,6 +97,7 @@
   border-radius: 4px;
   margin: 0 3px;
   padding: 20px 15px;
+  min-width: 35px;
   font-size: 1em;
   font-weight: bold;
   color: black;
@@ -197,14 +206,17 @@
     padding-left: 10px;
   }
 
+  .wordle-score {
+    font-size: 20px;
+  }
+
   .help-icon {
     height: 20px;
     width: 20px;
   }
 
-  /* Adjust the max-width as needed */
   .wordle-tile {
-    width: 15vw; /* Increase size to ensure it fits well on smaller screens */
+    width: 15vw;
     height: 15vw;
   }
 

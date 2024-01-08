@@ -33,6 +33,14 @@ const useWordle = () => {
   const [currentPlayer, setCurrentPlayer] = useState(1); // 1 for Player 1, 2 for Player 2
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [startingPlayer, setStartingPlayer] = useState(1); // 1 for Player 1, 2 for Player 2
+  const [player1Score, setPlayer1Score] = useState(0);
+  const [player2Score, setPlayer2Score] = useState(0);
+
+  const resetScore = ()=> {
+    setPlayer1Score(0);
+    setPlayer2Score(0);
+
+  }
 
   const alternateStartingPlayer = () => {
     const newStartingPlayer = startingPlayer === 1 ? 2 : 1;
@@ -89,6 +97,12 @@ const useWordle = () => {
 
     if (currentGuess.toUpperCase() === correctWord.toUpperCase()) {
       isWinningGuess = true;
+      if (currentPlayer === 1) {
+        setPlayer1Score((prevScore) => prevScore + 1);
+      } else {
+        setPlayer2Score((prevScore) => prevScore + 1);
+      }
+
       setTimeout(() => {
         setGameWon(true);
       }, 2000); // Delay for win animation
@@ -140,15 +154,7 @@ const useWordle = () => {
     }
     // Reset current guess
     setCurrentGuess("");
-  }, [
-    currentGuess,
-    correctWord,
-    currentTry,
-    gameWon,
-    gameLost,
-    lettersState,
-    boardState,
-  ]);
+  }, [gameWon, gameLost, currentGuess, correctWord, boardState, currentTry, lettersState, currentPlayer]);
 
   // Function to handle key presses
   const handleKeyPress = (key: string) => {
@@ -270,6 +276,9 @@ const useWordle = () => {
     currentPlayer,
     isGameStarted,
     setIsGameStarted,
+    player1Score,
+    player2Score,
+    resetScore,
   };
 };
 

@@ -26,6 +26,8 @@ const App: React.FC = () => {
     currentPlayer,
     resetGame,
     handleKeyPress,
+    player1Score,
+    player2Score,
   } = useWordle();
 
   const [isGameStarted, setIsGameStarted] = useState(false);
@@ -120,6 +122,10 @@ const App: React.FC = () => {
               onReset={resetGame}
               currentPlayer={currentPlayer === 1 ? player1 : player2}
               correctWord={correctWord}
+              player1={player1}
+              player2={player2}
+              player1Score={player1Score}
+              player2Score={player2Score}
             />
           )}
           {gameLost && (
@@ -157,6 +163,13 @@ const App: React.FC = () => {
         <>
           <div className="title-row">
             <div className="wordle-title">Wordle For Two</div>
+            <div className="wordle-score">
+              {isGameStarted && (
+                <>
+                  {player1}: {player1Score} - {player2}: {player2Score}
+                </>
+              )}
+            </div>
             <svg
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
