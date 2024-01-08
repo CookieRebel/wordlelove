@@ -143,7 +143,6 @@ const App: React.FC = () => {
             disabled={gameWon}
             lettersState={lettersState}
           />
-          ;
         </>
       );
     }

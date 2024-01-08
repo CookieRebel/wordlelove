@@ -11,7 +11,7 @@ const WinMessage: React.FC<IMessageWon> = ({
       The word is {correctWord}. {currentPlayer} won!
     </div>
     <button className={"play-again-button"} onClick={onReset}>
-      Next Game
+      New Game
     </button>
   </div>
 );

@@ -107,9 +107,5 @@
   .close-button {
     position: absolute;
     top: 150px;
-    right: 20px;
-    /* other styles */
   }
-
-  /* Adjust other styles as necessary */
 }
