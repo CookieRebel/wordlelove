@@ -10,6 +10,10 @@
   padding-left: 10px;
 }
 
+.right-buttons {
+  margin-right: 10px;
+}
+
 .wordle-score {
   margin-left: auto;
   margin-right: auto;

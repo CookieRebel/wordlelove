@@ -25,8 +25,8 @@ const HowToPlay: React.FC<HowToPlayProps> = ({ onClose }) => {
             close your guess was to the word.
           </li>
           <li>
-            Players alternate guesses within one game. The player whose turn to
-            guess it is is shown at the top.
+            Players alternate guesses in one game. Just pass the keyboard or
+            phone. The player whose turn to guess it is is shown at the top.
           </li>
         </ul>
         <p>

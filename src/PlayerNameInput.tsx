@@ -38,7 +38,7 @@ const PlayerNameInput: React.FC<PlayerNameInputProps> = ({
           value={player1}
           onChange={(e) => setPlayer1(e.target.value.toUpperCase())}
           onKeyPress={(e) => {
-            if (e.key === "Enter") {
+            if (e.key === "Enter" && player1 !== "") {
               setInputStage("player2");
             }
           }}
@@ -52,7 +52,7 @@ const PlayerNameInput: React.FC<PlayerNameInputProps> = ({
           value={player2}
           onChange={(e) => setPlayer2(e.target.value.toUpperCase())}
           onKeyPress={(e) => {
-            if (e.key === "Enter") {
+            if (e.key === "Enter" && player2 !== "") {
               handleSubmit();
             }
           }}

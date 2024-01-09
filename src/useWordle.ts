@@ -36,11 +36,29 @@ const useWordle = () => {
   const [player1Score, setPlayer1Score] = useState(0);
   const [player2Score, setPlayer2Score] = useState(0);
 
-  const resetScore = ()=> {
+  useEffect(() => {
+    const storedPlayer1Score = localStorage.getItem("player1Score");
+    const storedPlayer2Score = localStorage.getItem("player2Score");
+
+    if (storedPlayer1Score) {
+      setPlayer1Score(Number(storedPlayer1Score));
+    }
+
+    if (storedPlayer2Score) {
+      setPlayer2Score(Number(storedPlayer2Score));
+    }
+  }, []);
+
+  useEffect(() => {
+    // Save player scores to localStorage on change
+    localStorage.setItem("player1Score", player1Score.toString());
+    localStorage.setItem("player2Score", player2Score.toString());
+  }, [player1Score, player2Score]);
+
+  const resetScore = () => {
     setPlayer1Score(0);
     setPlayer2Score(0);
-
-  }
+  };
 
   const alternateStartingPlayer = () => {
     const newStartingPlayer = startingPlayer === 1 ? 2 : 1;
@@ -154,10 +172,19 @@ const useWordle = () => {
     }
     // Reset current guess
     setCurrentGuess("");
-  }, [gameWon, gameLost, currentGuess, correctWord, boardState, currentTry, lettersState, currentPlayer]);
+  }, [
+    gameWon,
+    gameLost,
+    currentGuess,
+    correctWord,
+    boardState,
+    currentTry,
+    lettersState,
+    currentPlayer,
+  ]);
 
   // Function to handle key presses
-  const handleKeyPress = (key: string) => {
+  const handleGamePlayKeyPress = (key: string) => {
     if (key === "ENTER") {
       // Your existing logic to handle enter press
       processGuess();
@@ -270,7 +297,7 @@ const useWordle = () => {
     invalidWord,
     gameLost,
     shakeTiles,
-    handleKeyPress,
+    handleGamePlayKeyPress,
     processGuess,
     resetGame,
     currentPlayer,
