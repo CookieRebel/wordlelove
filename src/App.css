@@ -21,12 +21,11 @@
   font-weight: bold;
 }
 
-.help-icon {
-  margin-left: auto;
-  cursor: pointer;
-  margin-right: 10px;
-  height: 28px;
-  width: 28px;
+.button {
+  background-color: #6aaa64;
+  color: white;
+  border-radius: 4px;
+  border: 1px solid black;
 }
 
 .wordle-container {
@@ -202,44 +201,6 @@
   animation: shake 1s ease-in-out;
 }
 
-@media (max-width: 600px) {
-  .wordle-title {
-    font-size: 30px;
-    font-weight: bold;
-    display: block;
-    padding-left: 10px;
-  }
-
-  .wordle-score {
-    font-size: 20px;
-  }
-
-  .help-icon {
-    height: 20px;
-    width: 20px;
-  }
-
-  .wordle-tile {
-    width: 15vw;
-    height: 15vw;
-  }
-
-  .wordle-key {
-    font-weight: bold;
-    font-size: 1.2em;
-    /*min-width: 8vw; !* Increase key size for better tap accuracy *!*/
-    /*padding: 8px; !* Increase padding for larger touch area *!*/
-    /*height: 10vw;*/
-    padding: 15px 8px;
-  }
-
-  /* Adjust the keyboard layout to ensure it's fully visible */
-  .wordle-keyboard {
-    flex-wrap: wrap; /* Wrap keys to the next line if they don't fit */
-    justify-content: center; /* Center the keys to maintain layout */
-  }
-}
-
 @keyframes flipTileVertical {
   0% {
     transform: rotateX(0deg);
@@ -284,4 +245,47 @@
   font-size: 24px;
   font-weight: bold;
   margin: 10px 0;
+}
+
+@media (max-width: 600px) {
+  .wordle-title {
+    font-size: 18px;
+    font-weight: bold;
+    display: block;
+    padding-left: 10px;
+  }
+
+  .wordle-score {
+    font-size: 12px;
+  }
+
+  .button-icon {
+    height: 15px;
+    width: 15px;
+  }
+
+  .current-player-indicator {
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+
+  .wordle-tile {
+    width: 15vw;
+    height: 15vw;
+  }
+
+  .wordle-key {
+    font-weight: bold;
+    font-size: 1.2em;
+    padding: 15px 8px;
+    min-width: 30px;
+  }
+
+  /* Adjust the keyboard layout to ensure it's fully visible */
+  .wordle-keyboard {
+    flex-wrap: wrap; /* Wrap keys to the next line if they don't fit */
+    justify-content: center; /* Center the keys to maintain layout */
+  }
 }

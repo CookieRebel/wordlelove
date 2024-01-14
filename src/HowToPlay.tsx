@@ -10,9 +10,11 @@ const HowToPlay: React.FC<HowToPlayProps> = ({ onClose }) => {
   return (
     <div className="how-to-play-overlay">
       <div className="how-to-play-container">
-        <button className="close-button" onClick={onClose}>
-          ×
-        </button>
+        <div>
+          <button className="close-button" onClick={onClose}>
+            ×
+          </button>
+        </div>
         <h1>How To Play</h1>
         <p>Two players take turns to guess the Wordle in 6 tries.</p>
         <ul>

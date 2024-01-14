@@ -1,4 +1,5 @@
 import React from "react";
+import { Delete } from "react-feather";
 
 interface KeyboardProps {
   onKeyPress: (key: string) => void;
@@ -52,11 +53,7 @@ const Keyboard: React.FC<KeyboardProps> = ({
           onClick={() => onKeyPress("DELETE")}
           key={"DELETE"}
         >
-          <img
-            src={"/backspace.png"}
-            alt={"backspace"}
-            className={"backspace"}
-          />
+          <Delete className={"backspace"} />
         </button>
       </div>
     </div>

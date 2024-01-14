@@ -200,12 +200,20 @@ const App: React.FC = () => {
               )}
             </div>
             <div className={"right-buttons"}>
-              <button onClick={resetAll} title={"Reset Game"}>
-                <RotateCcw />
+              <button
+                onClick={resetAll}
+                title={"Reset Game"}
+                className="button"
+              >
+                <RotateCcw className={"button-icon"} />
               </button>
               &nbsp;
-              <button onClick={onHowToPlay} title={"How To Play"}>
-                <HelpCircle />
+              <button
+                onClick={onHowToPlay}
+                title={"How To Play"}
+                className="button"
+              >
+                <HelpCircle className={"button-icon"} />
               </button>
             </div>
           </div>
