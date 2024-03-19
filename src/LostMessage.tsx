@@ -7,7 +7,7 @@ const LostMessage: React.FC<IMessageLost> = ({
   player1,
   player2,
 }) => (
-  <div className="game-lost-message">
+  <div className="lost-message">
     <div>
       {player1} and {player2} lost! The correct word was{" "}
       {correctWord.toUpperCase()}.

@@ -19,13 +19,13 @@ const App: React.FC = () => {
     boardState,
     lettersState,
     shakeTiles,
-    gameWon,
-    gameLost,
+    matchWon,
+    matchLost,
     invalidWord,
     currentTry,
     correctWord,
     currentPlayer,
-    resetGame,
+    resetMatch,
     player1Score,
     player2Score,
     handleGamePlayKeyPress,
@@ -112,7 +112,7 @@ const App: React.FC = () => {
   };
 
   const resetAll = () => {
-    resetGame();
+    resetMatch();
     setPlayer1("");
     setPlayer2("");
     setPlayerNamesReady(false);
@@ -120,7 +120,7 @@ const App: React.FC = () => {
     setInputStage("player1");
     resetScore();
   };
-  // Conditional rendering based on the game state
+  // Conditional rendering based on the match state
   const renderContent = () => {
     if (!playerNamesReady) {
       // Render the player name input screen
@@ -138,15 +138,15 @@ const App: React.FC = () => {
         </>
       );
     } else {
-      // Render the main game screen
+      // Render the main match screen
       return (
         <>
           <CurrentPlayerIndicator
             currentPlayerName={currentPlayer === 1 ? player1 : player2}
           />
-          {gameWon && (
+          {matchWon && (
             <WinMessage
-              onReset={resetGame}
+              onReset={resetMatch}
               currentPlayer={currentPlayer === 1 ? player1 : player2}
               correctWord={correctWord}
               player1={player1}
@@ -155,9 +155,9 @@ const App: React.FC = () => {
               player2Score={player2Score}
             />
           )}
-          {gameLost && (
+          {matchLost && (
             <LostMessage
-              onReset={resetGame}
+              onReset={resetMatch}
               correctWord={correctWord}
               player1={player1}
               player2={player2}
@@ -175,7 +175,7 @@ const App: React.FC = () => {
                 ? handleGamePlayKeyPress
                 : handlePlayerNameKeyPress
             }
-            disabled={gameWon}
+            disabled={matchWon}
             lettersState={lettersState}
           />
         </>

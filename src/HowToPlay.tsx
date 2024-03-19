@@ -27,16 +27,17 @@ const HowToPlay: React.FC<HowToPlayProps> = ({ onClose }) => {
             close your guess was to the word.
           </li>
           <li>
-            Players alternate guesses in one game by passing the keyboard or
+            Players alternate guesses in one match by passing the keyboard or
             phone to the other player. The player whose turn it is is shown at
             the top.
           </li>
         </ul>
         <p>
-          You can play as many games as you like. Players alternate successive
-          games: player 1 starts the first game, player 2 starts the 2nd game,
-          and so on.
+          You can play as many matches as you like. Players alternate successive
+          matches: player 1 starts the first match, player 2 starts the 2nd
+          match, and so on.
         </p>
+        <p>The total game score is displayed on the top.</p>
         <p>Examples</p>
         <div>
           <span className="letter correct">W</span>

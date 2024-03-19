@@ -26,28 +26,35 @@ const useWordle = () => {
   const [lettersState, setLettersState] = useState<{
     [key: string]: "correct" | "present" | "absent" | "default";
   }>({});
-  const [gameWon, setGameWon] = useState(false);
+  const [matchWon, setMatchWon] = useState(false);
   const [invalidWord, setInvalidWord] = useState(false);
-  const [gameLost, setGameLost] = useState(false);
+  const [matchLost, setMatchLost] = useState(false);
   const [shakeTiles, setShakeTiles] = useState(false);
-  const [currentPlayer, setCurrentPlayer] = useState(1); // 1 for Player 1, 2 for Player 2
-  const [isGameStarted, setIsGameStarted] = useState(false);
-  const [startingPlayer, setStartingPlayer] = useState(1); // 1 for Player 1, 2 for Player 2
-  const [player1Score, setPlayer1Score] = useState(0);
-  const [player2Score, setPlayer2Score] = useState(0);
-
-  useEffect(() => {
+  const [isMatchStarted, setIsMatchStarted] = useState(false);
+  // The starting player is the one who starts this match
+  // This is stored in local storage
+  const [startingPlayer, setStartingPlayer] = useState<number>(() => {
+    const savedStartingPlayer = localStorage.getItem("startingPlayer");
+    return savedStartingPlayer ? parseInt(savedStartingPlayer, 10) : 1; // Default to player 1 if not found
+  });
+  // The current player is the one whose turn it is to guess in this match
+  const [currentPlayer, setCurrentPlayer] = useState<number>(startingPlayer);
+  const [player1Score, setPlayer1Score] = useState(() => {
     const storedPlayer1Score = localStorage.getItem("player1Score");
-    const storedPlayer2Score = localStorage.getItem("player2Score");
-
     if (storedPlayer1Score) {
-      setPlayer1Score(Number(storedPlayer1Score));
+      return Number(storedPlayer1Score);
+    } else {
+      return 0;
     }
-
+  });
+  const [player2Score, setPlayer2Score] = useState(() => {
+    const storedPlayer2Score = localStorage.getItem("player2Score");
     if (storedPlayer2Score) {
-      setPlayer2Score(Number(storedPlayer2Score));
+      return Number(storedPlayer2Score);
+    } else {
+      return 0;
     }
-  }, []);
+  });
 
   useEffect(() => {
     // Save player scores to localStorage on change
@@ -60,9 +67,13 @@ const useWordle = () => {
     setPlayer2Score(0);
   };
 
+  useEffect(() => {
+    localStorage.setItem("startingPlayer", startingPlayer.toString());
+  }, [startingPlayer]);
+
   const alternateStartingPlayer = () => {
     const newStartingPlayer = startingPlayer === 1 ? 2 : 1;
-    console.log("lternate starting player", newStartingPlayer);
+    console.log("Alternate starting player", newStartingPlayer);
     setStartingPlayer(newStartingPlayer);
     setCurrentPlayer(newStartingPlayer);
   };
@@ -107,7 +118,7 @@ const useWordle = () => {
     };
 
     // Check for game over or invalid guess length
-    if (gameWon || gameLost || currentGuess.length !== WORD_LENGTH) {
+    if (matchWon || matchLost || currentGuess.length !== WORD_LENGTH) {
       return;
     }
 
@@ -122,7 +133,7 @@ const useWordle = () => {
       }
 
       setTimeout(() => {
-        setGameWon(true);
+        setMatchWon(true);
       }, 2000); // Delay for win animation
     } else {
       // Validate the word if it's not a winning guess
@@ -161,7 +172,7 @@ const useWordle = () => {
     setCurrentTry(currentTry + 1);
     if (currentTry === MAX_TRIES - 1 && !isWinningGuess) {
       setTimeout(() => {
-        setGameLost(true);
+        setMatchLost(true);
       }, 2000); // Delay for lose animation
     }
 
@@ -173,8 +184,8 @@ const useWordle = () => {
     // Reset current guess
     setCurrentGuess("");
   }, [
-    gameWon,
-    gameLost,
+    matchWon,
+    matchLost,
     currentGuess,
     correctWord,
     boardState,
@@ -199,9 +210,9 @@ const useWordle = () => {
     }
   };
 
-  // Function to reset the game
-  const resetGame = () => {
-    // Reset all game states to their initial values
+  // Function to reset the match
+  const resetMatch = () => {
+    // Reset all match states to their initial values
     setBoardState(
       Array(MAX_TRIES).fill(
         Array(WORD_LENGTH).fill({ letter: "", status: "default" })
@@ -212,8 +223,8 @@ const useWordle = () => {
     setCorrectWord(randomWord);
     setCurrentGuess("");
     setCurrentTry(0);
-    setGameWon(false);
-    setGameLost(false);
+    setMatchWon(false);
+    setMatchLost(false);
     setLettersState({});
     alternateStartingPlayer();
   };
@@ -264,7 +275,7 @@ const useWordle = () => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       console.log("key down", event.key);
-      if (isGameStarted) {
+      if (isMatchStarted) {
         if (event.key === "Enter") {
           // handle enter
           processGuess();
@@ -286,23 +297,23 @@ const useWordle = () => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [currentGuess, processGuess, isGameStarted]);
+  }, [currentGuess, processGuess, isMatchStarted]);
 
   return {
     boardState,
     correctWord,
     currentTry,
     lettersState,
-    gameWon,
+    matchWon,
     invalidWord,
-    gameLost,
+    matchLost,
     shakeTiles,
     handleGamePlayKeyPress,
     processGuess,
-    resetGame,
+    resetMatch,
     currentPlayer,
-    isGameStarted,
-    setIsGameStarted,
+    isMatchStarted,
+    setIsMatchStarted,
     player1Score,
     player2Score,
     resetScore,

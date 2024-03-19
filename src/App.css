@@ -156,7 +156,7 @@
   border-radius: 8px;
 }
 .invalid-word-message,
-.game-lost-message,
+.lost-message,
 .win-message {
   position: absolute;
   top: 100px;

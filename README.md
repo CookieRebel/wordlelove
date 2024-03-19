@@ -1,5 +1,5 @@
 # GPTWordle
-This is a version of the popular game Wordle built by ChatGPT and me. WordleLove is a detailed implementation of the popular word puzzle game Wordle using React and TypeScript. This project demonstrates the use of modern web technologies to create an interactive and engaging user experience.
+This is a version of the popular game Wordle modified for 2 players and built by ChatGPT and me. WordleLove is a detailed implementation of the popular word puzzle game Wordle using React and TypeScript. This project demonstrates the use of modern web technologies to create an interactive and engaging user experience.
 
 
 ## How to run
@@ -10,11 +10,18 @@ This is a version of the popular game Wordle built by ChatGPT and me. WordleLove
 ## Game Rules
 
 ### Objective
-Players aim to guess a secret five-letter word within six attempts. Each guess provides feedback, guiding players towards the correct word.
-- Type in a 5 letter word and press enter.
-- The game will tell you how many letters you got right and how many letters are in the correct position.
-- Keep guessing until you get the word right!
-- If you want to play again, press the "Play Again" button.
+Two players take turns to guess the Wordle in 6 tries.
+- Each guess must be a valid 5-letter word. Hit the enter button to
+submit.
+- After each guess, the color of the tiles will change to show how
+close your guess was to the word.
+- Players alternate guesses in one match by passing the keyboard or
+phone to the other player. The player whose turn it is is shown at
+the top.
+- You can play as many matches as you like. Players alternate successive
+matches: player 1 starts the first match, player 2 starts the 2nd
+match, and so on.
+- The total game score is displayed on the top.
 
 ### Gameplay
 - The secret word is always five letters.
