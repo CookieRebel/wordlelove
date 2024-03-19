@@ -90,26 +90,8 @@ const useWordle = () => {
     setCorrectWord(randomWord);
   }, [getRandomWord]);
 
-  // Function to check the validity of a word using an API
-  const checkWordValidity = async (word: string): Promise<boolean> => {
-    try {
-      const response = await fetch(
-        `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
-      );
-      if (!response.ok) {
-        if (response.status === 404) {
-          // Word not found, so it's not a valid word
-          return false;
-        }
-        console.error("Failed to check word validity");
-        return false;
-      }
-      // If the word exists, the API will return a 200 status
-      return true;
-    } catch (error) {
-      console.error("Error checking word validity:", error);
-      return false;
-    }
+  const checkWordValidity = (word: string) => {
+    return Words.includes(word.toLowerCase());
   };
 
   const processGuess = useCallback(async () => {
@@ -137,7 +119,7 @@ const useWordle = () => {
       }, 2000); // Delay for win animation
     } else {
       // Validate the word if it's not a winning guess
-      const isValidWord = await checkWordValidity(currentGuess);
+      const isValidWord = checkWordValidity(currentGuess);
       if (!isValidWord) {
         setInvalidWord(true);
         setShakeTiles(true);
