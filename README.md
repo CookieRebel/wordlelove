@@ -1,4 +1,4 @@
-# GPTWordle
+# Wordle For Two
 This is a version of the popular game Wordle modified for 2 players and built by ChatGPT and me. WordleLove is a detailed implementation of the popular word puzzle game Wordle using React and TypeScript. This project demonstrates the use of modern web technologies to create an interactive and engaging user experience.
 
 
